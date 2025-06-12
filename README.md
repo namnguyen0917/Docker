@@ -1,4 +1,5 @@
 ### Cấu trúc thư mục
+```
 cakephp-docker/
 ├── app/                   # Source code của CakePHP (đặt mã nguồn ở đây)
 ├── docker/
