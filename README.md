@@ -8,9 +8,10 @@ cakephp-docker/
 │       ├── Dockerfile
 │       └── httpd.conf
 ├── docker-compose.yml
-
 ```
-### 1. docker-compose.yml
+
+## 1. docker-compose.yml
+```
 version: '3.8'
 
 services:
@@ -43,9 +44,10 @@ services:
 
 volumes:
   db-data:
+```
 
-### 2. docker/web/Dockerfile
-
+## 2. docker/web/Dockerfile
+```
 FROM amazonlinux:2023
 
 RUN yum update -y
