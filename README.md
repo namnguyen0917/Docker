@@ -1,6 +1,5 @@
-### Cấu trúc thư mục
-## Cấu trúc thư mục
-# Cấu trúc thư mục
+# Docker Php
+## Basic directory structure
 ```
 cakephp-docker/
 ├── app/                   # Source code của CakePHP (đặt mã nguồn ở đây)
@@ -10,25 +9,7 @@ cakephp-docker/
 │       └── httpd.conf
 ├── docker-compose.yml
 
-# testttt
-## testttt
-* hssss
-*
 ```
-`111`
-``2222
-``
-
-<pre> ```bash composer install php artisan serve ``` </pre>
-'111111333'
-"212313123213"
-
-| Công nghệ | Phiên bản |
-|-----------|-----------|
-| PHP       | 8.2       |
-| MySQL     | 8.x       |
-| CakePHP   | 5.1       |
-
 ### 1. docker-compose.yml
 version: '3.8'
 
