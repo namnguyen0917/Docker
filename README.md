@@ -23,6 +23,12 @@ cakephp-docker/
 '111111333'
 "212313123213"
 
+| Công nghệ | Phiên bản |
+|-----------|-----------|
+| PHP       | 8.2       |
+| MySQL     | 8.x       |
+| CakePHP   | 5.1       |
+
 ### 1. docker-compose.yml
 version: '3.8'
 
