@@ -85,6 +85,12 @@ RUN a2enmod rewrite
 
 # Copy Composer vào container
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+```
+
+docker-compose build         # Build image
+docker-compose up -d         # Khởi động container nền (detached mode)
+docker-compose ps            # Kiểm tra container đang chạy
+
 
 # Set working directory
 WORKDIR /var/www/html
