@@ -12,7 +12,7 @@ cakephp-docker/
 
 ## 1. docker-compose.yml
 ```
-version: '3.8'  # Phiên bản Docker Compose, dùng 3.8 để tương thích nhiều tính năng hiện đại
+version: '3.8'  # Phiên bản Docker Compose.
 
 services:
   app:
