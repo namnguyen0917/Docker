@@ -47,53 +47,35 @@ services:
 
 ## 2. docker/web/Dockerfile
 ```
-FROM amazonlinux:2023
-
-RUN yum update -y
-
-# Cài Apache + PHP và các extension
-RUN yum install -y httpd php php-mbstring php-xml php-json php-gd \
-    php-intl php-mysqli php-pdo php-curl php-zip php-bcmath php-cli php-pear
-
-# Tạo thư mục chạy PHP
-RUN mkdir -p /run/php-fpm && chmod -R 777 /run/php-fpm
-
-# Cài Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Cấu hình Apache (file riêng)
-COPY httpd.conf /etc/httpd/conf/httpd.conf
-
-# Mở port 80
-EXPOSE 80
-
-CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
-
-
+# Sử dụng image PHP 8.2 với Apache
 FROM php:8.2-apache
 
-# Cài các gói hệ thống bắt buộc để build ext-intl và zip
+# Cài đặt các thư viện hệ thống cần thiết
 RUN apt-get update && apt-get install -y \
     libicu-dev \
     libonig-dev \
     libzip-dev \
     zip unzip \
-    && docker-php-ext-install intl pdo pdo_mysql mbstring zip
+    git curl \
+    && docker-php-ext-install intl pdo pdo_mysql mbstring zip \
+    && a2enmod rewrite
 
-# Bật rewrite cho Apache
-RUN a2enmod rewrite
-
-# Copy Composer vào container
+# Copy Composer từ image chính thức (nhanh và an toàn)
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-```
 
+# Cài Composer dependencies (nếu có sẵn composer.json)
+WORKDIR /var/www/html
+COPY . /var/www/html
+
+RUN if [ -f "composer.json" ]; then composer install --no-interaction; fi
+
+# Tùy chọn: Copy php.ini cấu hình (nếu có sẵn)
+# COPY ./php.ini /usr/local/etc/php/php.ini
+
+```
+## các lệnh
+```
 docker-compose build         # Build image
 docker-compose up -d         # Khởi động container nền (detached mode)
 docker-compose ps            # Kiểm tra container đang chạy
-
-
-# Set working directory
-WORKDIR /var/www/html
-
-# Copy mã nguồn vào container
-COPY . /var/www/html
+```
