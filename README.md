@@ -7,7 +7,7 @@ cakephp-docker/
 │       ├── Dockerfile
 │       └── httpd.conf
 ├── docker-compose.yml
-
+```
 ### 1. docker-compose.yml
 version: '3.8'
 
