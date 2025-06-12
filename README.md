@@ -18,6 +18,8 @@ cakephp-docker/
 `111`
 ``2222
 ``
+
+<pre> ```bash composer install php artisan serve ``` </pre>
 ### 1. docker-compose.yml
 version: '3.8'
 
