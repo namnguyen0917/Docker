@@ -12,38 +12,37 @@ cakephp-docker/
 
 ## 1. docker-compose.yml
 ```
-version: '3.8'
+version: '3.8'  # Phiên bản Docker Compose, dùng 3.8 để tương thích nhiều tính năng hiện đại
 
 services:
   app:
     build:
-      context: ./docker/web
-    container_name: cakephp-app
+      context: ./docker/web  # Tham Chiếu đến thư mục hiện tại chứa Dockerfile.
+    container_name: cakephp_app  # Tên container, bạn có thể đặt tùy ý nếu k có mục này nó lấy tên service Ex: app-1
     volumes:
-      - ./app:/var/www/html
+      - ./app:/var/www/html  # Map mã nguồn local vào container để code cập nhật tự động
     ports:
-      - "8080:80"
+      - "8080:80"  # Map cổng 8080 (local) sang 80 (container), vào trình duyệt dùng http://localhost:8080
     environment:
-      - TZ=Asia/Ho_Chi_Minh
+      - CAKEPHP_DEBUG=true  # Biến môi trường tuỳ chỉnh, bạn có thể thêm biến APP_NAME, ENV... nếu muốn
     depends_on:
-      - db
+      - db  # Chờ service "db" (MySQL) khởi động trước rồi mới khởi động app
 
   db:
-    image: mysql:8.0
-    container_name: mysql-db
-    restart: always
+    image: mysql:8.0  # Image MySQL phiên bản 8.0 từ Docker Hub
+    container_name: cakephp_db  # Tên container MySQL
+    restart: always  # Tự động restart nếu MySQL bị dừng hoặc hệ thống khởi động lại
     environment:
-      MYSQL_DATABASE: cakephp
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: cakeuser
-      MYSQL_PASSWORD: secret
-    ports:
-      - "3306:3306"
+      MYSQL_DATABASE: cakephp        # Tên database mặc định
+      MYSQL_USER: cakeuser           # Tên user
+      MYSQL_PASSWORD: secret         # Mật khẩu của user
+      MYSQL_ROOT_PASSWORD: rootpass  # Mật khẩu root
     volumes:
-      - db-data:/var/lib/mysql
-
-volumes:
-  db-data:
+      - mysql_data:/var/lib/mysql  # Tạo volume để lưu dữ liệu vĩnh viễn
+    ports:
+      - "3306:3306"  # Map cổng MySQL nếu muốn kết nối từ máy host
+    networks:
+      - cakephp_network  # Kết nối vào cùng network với app
 ```
 
 ## 2. docker/web/Dockerfile
@@ -92,37 +91,3 @@ WORKDIR /var/www/html
 
 # Copy mã nguồn vào container
 COPY . /var/www/html
-
-
-📄 3. docker/web/httpd.conf
-
-ServerRoot "/etc/httpd"
-Listen 80
-
-Include conf.modules.d/*.conf
-User apache
-Group apache
-
-ServerAdmin you@example.com
-DocumentRoot "/var/www/html"
-
-<Directory "/var/www/html">
-    AllowOverride All
-    Require all granted
-</Directory>
-
-ErrorLog /var/log/httpd/error.log
-CustomLog /var/log/httpd/access.log combined
-
-<IfModule dir_module>
-    DirectoryIndex index.php index.html
-</IfModule>
-
-# MIME types
-AddType application/x-httpd-php .php
-AddType application/x-httpd-php-source .phps
-
-# PHP config
-<FilesMatch \.php$>
-    SetHandler application/x-httpd-php
-</FilesMatch>
