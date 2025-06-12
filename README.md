@@ -1,4 +1,4 @@
-# Docker Php
+# Docker PHP
 ## Basic directory structure
 ```
 cakephp-docker/
@@ -10,7 +10,7 @@ cakephp-docker/
 ├── docker-compose.yml
 ```
 
-## 1. docker-compose.yml
+## 1. ```docker-compose.yml```
 ```
 version: '3.8'
 
